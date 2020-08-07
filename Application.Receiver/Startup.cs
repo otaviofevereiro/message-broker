@@ -1,6 +1,3 @@
-using System;
-using Application.MessageBroker;
-using Application.Messages;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

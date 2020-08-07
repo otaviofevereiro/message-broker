@@ -11,6 +11,7 @@ namespace Application.MessageBroker
         private readonly IModel channel;
         private readonly Lazy<T> messageLazy;
         private bool commited;
+        private bool invalidated;
         private bool rollbacked;
 
         public DequeueContext(IModel channel, BasicDeliverEventArgs basicDeliverEventArgs)
@@ -19,12 +20,21 @@ namespace Application.MessageBroker
             this.basicDeliverEventArgs = basicDeliverEventArgs;
             messageLazy = new Lazy<T>(JsonSerializer.Deserialize<T>(basicDeliverEventArgs.Body.ToArray()));
         }
+
         public T Message => messageLazy.Value;
 
         public IDequeueContext<T> Commit()
         {
-            channel.BasicAck(basicDeliverEventArgs.DeliveryTag, false);
+            channel.BasicAck(basicDeliverEventArgs.DeliveryTag, multiple: false);
             commited = true;
+
+            return this;
+        }
+
+        public IDequeueContext<T> Invalidate()
+        {
+            channel.BasicReject(basicDeliverEventArgs.DeliveryTag, requeue: false);
+            invalidated = true;
 
             return this;
         }
@@ -39,8 +49,8 @@ namespace Application.MessageBroker
 
         internal void Ensure()
         {
-            if (!commited && !rollbacked)
-                throw new InvalidOperationException("É necessário ao fim da execução indicar o Commit ou Rollback da mensagem.");
+            if (!commited && !rollbacked && !invalidated)
+                throw new InvalidOperationException("É necessário ao fim da execução indicar o Commit, Rollback ou Invalidate da mensagem.");
         }
     }
 }

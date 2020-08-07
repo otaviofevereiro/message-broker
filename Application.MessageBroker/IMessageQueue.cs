@@ -7,5 +7,6 @@ namespace Application.MessageBroker
         void Enqueue<T>(string queueName, T obj);
 
         void Dequeue<T>(string queueName, Action<IDequeueContext<T>> dequeueAction);
+        void EnsureQueue(string queueName);
     }
 }

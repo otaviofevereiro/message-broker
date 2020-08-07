@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -13,6 +15,9 @@ namespace Application.MessageBroker
 
         public RabbitMessageQueue(IConnectionFactory connectionFactoryMq)
         {
+            Debug.WriteLine("Cheguei");
+            Debug.WriteLine(((ConnectionFactory)connectionFactoryMq).HostName + ((ConnectionFactory)connectionFactoryMq).Port);
+
             connection = connectionFactoryMq.CreateConnection();
             channel = connection.CreateModel();
         }
@@ -30,6 +35,11 @@ namespace Application.MessageBroker
             };
 
             channel.BasicConsume(queueName, autoAck: false, consumer);
+        }
+
+        public void EnsureQueue(string queueName)
+        {
+            channel.QueueDeclare(queueName, true, false, false);
         }
 
         public void Enqueue<T>(string queueName, T obj)
