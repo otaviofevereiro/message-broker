@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application.Data\Application.Data.csproj" />
+    <ProjectReference Include="..\Application.MessageBroker\Application.MessageBroker.csproj" />
+    <ProjectReference Include="..\Application.Messages\Application.Messages.csproj" />
+  </ItemGroup>
+
+
+</Project>
