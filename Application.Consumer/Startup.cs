@@ -18,6 +18,7 @@ namespace Application.Consumer
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -46,9 +47,6 @@ namespace Application.Consumer
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
             });
-
-            app.UseRabbitQueues(Queues.Messages);
-
         }
     }
 }

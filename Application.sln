@@ -9,9 +9,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Consumer", "App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.MessageBroker", "Application.MessageBroker\Application.MessageBroker.csproj", "{321FD6DA-E3CC-47B8-BEB7-1F600EA6657F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Messages", "Application.Messages\Application.Messages.csproj", "{710AA069-80A8-4BDD-A91E-24DA5E602AD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Messages", "Application.Messages\Application.Messages.csproj", "{710AA069-80A8-4BDD-A91E-24DA5E602AD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Data", "Application.Data\Application.Data.csproj", "{F11E331C-38B9-431B-872D-3D11796947C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Data", "Application.Data\Application.Data.csproj", "{F11E331C-38B9-431B-872D-3D11796947C7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{45B815BD-0EF6-4CA2-990D-C1BE696142AA}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{48FFFBCF-7951-4A68-AD0B-FCA2B6E3A801}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,6 +49,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{91A32E60-38DF-4FC2-8617-BA409C40F556} = {48FFFBCF-7951-4A68-AD0B-FCA2B6E3A801}
+		{53E1C246-0A6F-473B-96F3-9282C18BA75F} = {48FFFBCF-7951-4A68-AD0B-FCA2B6E3A801}
+		{710AA069-80A8-4BDD-A91E-24DA5E602AD8} = {48FFFBCF-7951-4A68-AD0B-FCA2B6E3A801}
+		{F11E331C-38B9-431B-872D-3D11796947C7} = {48FFFBCF-7951-4A68-AD0B-FCA2B6E3A801}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {45129C5F-1016-4E91-8680-02FC2C8502C2}

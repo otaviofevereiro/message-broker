@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.Consumer.Schedulling
 {
-    public class MessageConsumerSchedulling : IHostedService
+    public class MessageConsumerSchedulling : BackgroundService
     {
         private readonly IMessageQueue messageQueue;
         private readonly IRepository<Data.Message> repository;
@@ -18,27 +18,22 @@ namespace Application.Consumer.Schedulling
             this.repository = repository;
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            messageQueue.Dequeue<Messages.Message>(Queues.Messages,
-                context =>
-                {
-                    repository.Add(new Data.Message()
-                    {
-                        Text = context.Message.Text,
-                        To = context.Message.To
-                    });
-
-                    context.Commit();
-                }
-            );
+            messageQueue.CreateMessageReceiver<Messages.Message>(Queues.Messages, OnMessageReceived);
 
             await Task.CompletedTask;
         }
 
-        public async Task StopAsync(CancellationToken cancellationToken)
+        private void OnMessageReceived(IMessageContext<Messages.Message> context)
         {
-            await Task.Delay(-1, cancellationToken);
+            repository.Add(new Data.Message()
+            {
+                Text = context.Message.Text,
+                To = context.Message.To
+            });
+
+            context.Accept();
         }
     }
 }
