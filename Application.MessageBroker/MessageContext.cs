@@ -1,31 +1,29 @@
 ﻿using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using System;
 using System.Text.Json;
 
 namespace Application.MessageBroker
 {
-    public class DequeueContext<T> : IDequeueContext<T>
+    public class MessageContext<T> : IMessageContext<T>
     {
-
         private readonly IModel channel;
         private readonly ulong deliveryTag;
-        private Lazy<T> messageLazy;
         private bool accepted;
+        private bool disposedValue;
+        private Lazy<T> messageLazy;
         private bool rejected;
         private bool rollbacked;
-        private bool disposedValue;
 
-        public DequeueContext(IModel channel, ulong deliveryTag, ReadOnlyMemory<byte> body)
+        public MessageContext(IModel channel, ulong deliveryTag, ReadOnlyMemory<byte> body)
         {
             this.channel = channel;
             this.deliveryTag = deliveryTag;
-            messageLazy = new Lazy<T>(JsonSerializer.Deserialize<T>(body.ToArray()));
+            messageLazy = new Lazy<T>(() => JsonSerializer.Deserialize<T>(body.ToArray()));
         }
 
         public T Message => messageLazy.Value;
 
-        public IDequeueContext<T> Accept()
+        public IMessageContext<T> Accept()
         {
             channel.BasicAck(deliveryTag, multiple: false);
             accepted = true;
@@ -33,7 +31,7 @@ namespace Application.MessageBroker
             return this;
         }
 
-        public IDequeueContext<T> Reject()
+        public IMessageContext<T> Reject()
         {
             channel.BasicReject(deliveryTag, requeue: false);
 
@@ -42,7 +40,7 @@ namespace Application.MessageBroker
             return this;
         }
 
-        public IDequeueContext<T> Requeue()
+        public IMessageContext<T> Requeue()
         {
             channel.BasicNack(deliveryTag, multiple: false, requeue: true);
             rollbacked = false;
@@ -57,24 +55,7 @@ namespace Application.MessageBroker
         }
 
         #region Dispose
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    channel.Dispose();
-                }
-
-                basicDeliverEventArgs = null;
-                messageLazy = null;
-                disposedValue = true;
-
-                Ensure();
-            }
-        }
-
-        ~DequeueContext()
+        ~MessageContext()
         {
             Dispose(disposing: false);
         }
@@ -85,6 +66,21 @@ namespace Application.MessageBroker
             GC.SuppressFinalize(this);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    //.Dispose()
+                }
+
+                messageLazy = null;
+                disposedValue = true;
+
+                Ensure();
+            }
+        }
         #endregion
     }
 }

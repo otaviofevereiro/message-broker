@@ -17,7 +17,7 @@ namespace Application.MessageBroker
             channel = connection.CreateModel();
         }
 
-        public void Dequeue<T>(string queueName, Action<IDequeueContext<T>> dequeueAction)
+        public void CreateMessageReceiver<T>(string queueName, Action<IMessageContext<T>> onReceiveMessageAction)
         {
             EnsureQueue(queueName);
 
@@ -25,22 +25,22 @@ namespace Application.MessageBroker
 
             consumer.Received += (model, basicDeliverEventArgs) =>
             {
-                using (var dequeueContext = new DequeueContext<T>(channel, basicDeliverEventArgs.DeliveryTag, basicDeliverEventArgs.Body))
+                using (var dequeueContext = new MessageContext<T>(channel, basicDeliverEventArgs.DeliveryTag, basicDeliverEventArgs.Body))
                 {
-                    dequeueAction.Invoke(dequeueContext);
+                    onReceiveMessageAction.Invoke(dequeueContext);
                 }
             };
 
             channel.BasicConsume(queueName, autoAck: false, consumer);
         }
 
-        public IDequeueContext<T> Dequeue<T>(string queueName)
+        public IMessageContext<T> Dequeue<T>(string queueName)
         {
             EnsureQueue(queueName);
 
             var response = channel.BasicGet(queueName, autoAck: false);
 
-            return new DequeueContext<T>(channel, response.DeliveryTag, response.Body);
+            return new MessageContext<T>(channel, response.DeliveryTag, response.Body);
         }
 
         public void Enqueue<T>(string queueName, T obj)

@@ -20,20 +20,20 @@ namespace Application.Consumer.Schedulling
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            messageQueue.Dequeue<Messages.Message>(Queues.Messages, OnDequeue);
+            messageQueue.CreateMessageReceiver<Messages.Message>(Queues.Messages, OnMessageReceived);
 
             await Task.CompletedTask;
         }
 
-        private void OnDequeue(IDequeueContext<Messages.Message> dequeueContext)
+        private void OnMessageReceived(IMessageContext<Messages.Message> context)
         {
             repository.Add(new Data.Message()
             {
-                Text = dequeueContext.Message.Text,
-                To = dequeueContext.Message.To
+                Text = context.Message.Text,
+                To = context.Message.To
             });
 
-            dequeueContext.Accept();
+            context.Accept();
         }
     }
 }

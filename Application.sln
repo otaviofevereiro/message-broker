@@ -9,9 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Consumer", "App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.MessageBroker", "Application.MessageBroker\Application.MessageBroker.csproj", "{321FD6DA-E3CC-47B8-BEB7-1F600EA6657F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Messages", "Application.Messages\Application.Messages.csproj", "{710AA069-80A8-4BDD-A91E-24DA5E602AD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Messages", "Application.Messages\Application.Messages.csproj", "{710AA069-80A8-4BDD-A91E-24DA5E602AD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Data", "Application.Data\Application.Data.csproj", "{F11E331C-38B9-431B-872D-3D11796947C7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Data", "Application.Data\Application.Data.csproj", "{F11E331C-38B9-431B-872D-3D11796947C7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{45B815BD-0EF6-4CA2-990D-C1BE696142AA}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
