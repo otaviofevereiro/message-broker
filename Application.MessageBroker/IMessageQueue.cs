@@ -4,9 +4,9 @@ namespace Application.MessageBroker
 {
     public interface IMessageQueue : IDisposable
     {
-        void Enqueue<T>(string queueName, T obj);
-
         void Dequeue<T>(string queueName, Action<IDequeueContext<T>> dequeueAction);
-        void EnsureQueue(string queueName);
+        IDequeueContext<T> Dequeue<T>(string queueName);
+
+        void Enqueue<T>(string queueName, T obj);
     }
 }

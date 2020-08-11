@@ -47,9 +47,6 @@ namespace Application.Consumer
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
             });
-
-            app.UseRabbitQueues(Queues.Messages);
-
         }
     }
 }

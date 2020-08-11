@@ -1,10 +1,13 @@
-﻿namespace Application.MessageBroker
+﻿using System;
+
+namespace Application.MessageBroker
 {
-    public interface IDequeueContext<T>
+    public interface IDequeueContext<T>: IDisposable
     {
         T Message { get; }
 
-        IDequeueContext<T> Commit();
-        IDequeueContext<T> Rollback();
+        IDequeueContext<T> Accept();
+        IDequeueContext<T> Reject();
+        IDequeueContext<T> Requeue();
     }
 }
